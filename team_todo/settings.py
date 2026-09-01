@@ -3,9 +3,8 @@ import dj_database_url
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
-from urllib.parse import urlparse
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -14,12 +13,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-# Vercel domains and allowed hosts
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.vercel.app',  # Allow all Vercel subdomains
-    '.now.sh',      # Legacy Vercel domains
+    '.vercel.app',
+    '.now.sh',
 ]
 
 # Application definition
@@ -38,8 +36,8 @@ INSTALLED_APPS = [
     'django_filters',
     'django_celery_beat',
     'django_celery_results',
-    'whitenoise',  # For serving static files
-    'storages',    # For cloud storage (S3, etc.)
+    'whitenoise',
+    'storages',
     
     # Custom apps
     'apps.accounts',
@@ -49,7 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'collaborative_todo.urls'
+ROOT_URLCONF = 'team_todo.urls'
 
 TEMPLATES = [
     {
@@ -77,16 +75,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'collaborative_todo.wsgi.application'
+WSGI_APPLICATION = 'team_todo.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# Database configuration with Vercel PostgreSQL support
 DATABASE_URL = config('DATABASE_URL', default=None)
 
 if DATABASE_URL:
-    # Production database (e.g., Neon, Supabase, or Vercel PostgreSQL)
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
@@ -95,11 +89,10 @@ if DATABASE_URL:
         )
     }
 else:
-    # Local development database
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default='collaborative_todo'),
+            'NAME': config('DB_NAME', default='team_todo'),
             'USER': config('DB_USER', default='postgres'),
             'PASSWORD': config('DB_PASSWORD', default='postgres'),
             'HOST': config('DB_HOST', default='localhost'),
@@ -118,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
 
-# REST Framework settings
+# REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -155,22 +148,18 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
-# CORS settings
+# CORS
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000,http://localhost:8000,https://*.vercel.app').split(',')
 CORS_ALLOW_CREDENTIALS = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-
-# WhiteNoise configuration for static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (User uploads)
-# For Vercel, use cloud storage
+# Media files
 if config('USE_S3', default=False, cast=bool):
-    # AWS S3 configuration
     AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
@@ -181,20 +170,19 @@ if config('USE_S3', default=False, cast=bool):
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 else:
-    # Local media storage (not recommended for production on Vercel)
     MEDIA_URL = '/media/'
     MEDIA_ROOT = BASE_DIR / 'media'
 
-# Celery settings (conditionally loaded)
-CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+# Celery
+CELERY_BROKER_URL = config('REDIS_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('REDIS_URL', default='redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
-# Email settings
+# Email
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
 EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
@@ -203,11 +191,11 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@collaborativetodo.com')
 
-# Firebase settings
+# Firebase
 FIREBASE_CREDENTIALS = config('FIREBASE_CREDENTIALS', default='')
 FIREBASE_PROJECT_ID = config('FIREBASE_PROJECT_ID', default='')
 
-# Twilio settings (for SMS)
+# Twilio
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
 TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
 TWILIO_PHONE_NUMBER = config('TWILIO_PHONE_NUMBER', default='')
@@ -218,24 +206,20 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# App-specific settings
+# App settings
 GROUP_TASK_AUTO_GENERATE_TIME = config('GROUP_TASK_AUTO_GENERATE_TIME', default='09:00')
 OTP_EXPIRY_MINUTES = config('OTP_EXPIRY_MINUTES', default=10, cast=int)
 
-# Security settings for production
+# Security (production)
 if not DEBUG:
-    # HTTPS settings
     SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    
-    # Security headers
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_BROWSER_XSS_FILTER = True
     X_FRAME_OPTIONS = 'DENY'
