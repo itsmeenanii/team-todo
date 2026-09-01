@@ -8,14 +8,13 @@ from django.db.utils import OperationalError
 from django.utils import timezone
 
 def health_check(request):
-    """Health check endpoint for Vercel monitoring"""
+    """Health check endpoint"""
     status = {
         'status': 'healthy',
         'timestamp': timezone.now().isoformat(),
         'services': {}
     }
     
-    # Check database
     try:
         connections['default'].cursor()
         status['services']['database'] = 'healthy'
@@ -43,7 +42,6 @@ urlpatterns = [
     path('api/notifications/', include('apps.notifications.urls')),
 ]
 
-# Serve static files in development
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
