@@ -2,16 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "collaborative_todo/wsgi.py",
+      "src": "team_todo/wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
         "runtime": "python3.10"
       }
-    },
-    {
-      "src": "manage.py",
-      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -24,31 +20,31 @@
     },
     {
       "src": "/vercel-health",
-      "dest": "collaborative_todo/urls.py"
+      "dest": "team_todo/wsgi.py"
     },
     {
       "src": "/health",
-      "dest": "collaborative_todo/urls.py"
+      "dest": "team_todo/wsgi.py"
     },
     {
       "src": "/admin/(.*)",
-      "dest": "collaborative_todo/wsgi.py"
+      "dest": "team_todo/wsgi.py"
     },
     {
       "src": "/api/(.*)",
-      "dest": "collaborative_todo/wsgi.py"
+      "dest": "team_todo/wsgi.py"
     },
     {
       "src": "/(.*)",
-      "dest": "collaborative_todo/wsgi.py"
+      "dest": "team_todo/wsgi.py"
     }
   ],
   "env": {
     "PYTHONPATH": ".",
-    "DJANGO_SETTINGS_MODULE": "collaborative_todo.settings"
+    "DJANGO_SETTINGS_MODULE": "team_todo.settings"
   },
   "functions": {
-    "collaborative_todo/wsgi.py": {
+    "team_todo/wsgi.py": {
       "memory": 1024,
       "maxDuration": 10
     }
