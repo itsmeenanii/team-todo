@@ -1,0 +1,36 @@
+[project]
+name = "collaborative-todo"
+version = "1.0.0"
+description = "Collaborative Group To-Do List Application"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "Django==4.2.0",
+    "djangorestframework==3.14.0",
+    "django-cors-headers==4.0.0",
+    "django-allauth==0.54.0",
+    "django-rest-auth==0.9.5",
+    "djangorestframework-simplejwt==5.2.2",
+    "psycopg2-binary==2.9.6",
+    "dj-database-url==2.1.0",
+    "whitenoise==6.5.0",
+    "django-storages==1.13.2",
+    "boto3==1.26.165",
+    "python-dotenv==1.0.0",
+    "django-filter==23.2",
+    "django-phone-field==1.8.0",
+    "python-decouple==3.8",
+    "gunicorn==21.2.0",
+]
+
+[tool.vercel]
+entrypoint = "collaborative_todo.wsgi:app"
+buildCommand = "python manage.py collectstatic --noinput"
+installCommand = "pip install -r requirements.txt"
+outputDirectory = "staticfiles"
+
+[tool.vercel.dev]
+buildCommand = "python manage.py collectstatic --noinput"
+
+[tool.vercel.production]
+buildCommand = "python manage.py collectstatic --noinput"
