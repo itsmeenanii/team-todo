@@ -19,3 +19,4 @@ django-celery-results==2.5.1
 firebase-admin==6.2.0
 twilio==8.7.0
 djangorestframework-datatables==0.6.0
+setuptools==70.0.0
