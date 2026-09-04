@@ -8,22 +8,6 @@
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/health",
-      "dest": "team_todo/wsgi.py"
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "team_todo/wsgi.py"
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "team_todo/wsgi.py"
-    },
-    {
       "src": "/(.*)",
       "dest": "team_todo/wsgi.py"
     }
