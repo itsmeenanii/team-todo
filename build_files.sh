@@ -2,10 +2,6 @@
 
 echo "🚀 Building for Vercel..."
 
-# Install PostgreSQL client for psycopg2 compilation
-echo "📦 Installing PostgreSQL client..."
-pip install --upgrade pip
-
 # Install dependencies
 echo "📦 Installing Python dependencies..."
 pip install -r requirements.txt
