@@ -18,6 +18,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '.vercel.app',
     '.now.sh',
+    'team-todo.vercel.app',
+    'team-todo-*.vercel.app',  # Wildcard for preview deployments
 ]
 
 # Application definition
