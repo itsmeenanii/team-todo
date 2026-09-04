@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Task, TaskStatus
-from django.utils import timezone
+from apps.accounts.serializers import UserSerializer
 
 class TaskSerializer(serializers.ModelSerializer):
     created_by_name = serializers.CharField(source='created_by.get_full_name', read_only=True)
@@ -47,11 +47,3 @@ class TaskCreateSerializer(serializers.ModelSerializer):
 class TaskUpdateStatusSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=['done', 'not_done'])
     notes = serializers.CharField(required=False, allow_blank=True)
-
-class TaskDashboardSerializer(serializers.Serializer):
-    user_id = serializers.IntegerField()
-    user_name = serializers.CharField()
-    task_id = serializers.IntegerField()
-    task_title = serializers.CharField()
-    status = serializers.CharField()
-    completed_at = serializers.DateTimeField(allow_null=True)
