@@ -3,11 +3,7 @@
   "builds": [
     {
       "src": "team_todo/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "installCommand": "pip install -r requirements.txt",
-        "buildCommand": "python manage.py collectstatic --noinput"
-      }
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -16,10 +12,20 @@
       "dest": "/static/$1"
     },
     {
+      "src": "/health",
+      "dest": "team_todo/wsgi.py"
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "team_todo/wsgi.py"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "team_todo/wsgi.py"
+    },
+    {
       "src": "/(.*)",
       "dest": "team_todo/wsgi.py"
     }
-  ],
-  "installCommand": "pip install -r requirements.txt",
-  "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate --noinput || true"
+  ]
 }
