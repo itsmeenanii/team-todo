@@ -1,18 +1,18 @@
-from rest_framework import status, viewsets, generics
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from .models import User
 from .serializers import (
     UserSerializer, UserRegistrationSerializer, UserLoginSerializer,
     OTPRequestSerializer, OTPVerifySerializer, AdminMemberSerializer,
-    MemberAddSerializer
+    MemberAddSerializer, UserProfileUpdateSerializer
 )
 from .permissions import IsAdminUser
+from apps.notifications.services import send_welcome_email
 
 class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = [AllowAny]
@@ -22,6 +22,7 @@ class AuthViewSet(viewsets.GenericViewSet):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
+            send_welcome_email(user)
             return Response({
                 'user': UserSerializer(user).data,
                 'message': 'Registration successful. Please login.'
@@ -86,9 +87,8 @@ class AuthViewSet(viewsets.GenericViewSet):
                 )
             
             otp = user.generate_otp()
-            # Send OTP via SMS (using Twilio)
+            # In production, send OTP via SMS
             # send_otp_sms(mobile, otp)
-            # For now, return OTP in response for testing
             return Response({
                 'otp': otp,  # Remove in production
                 'message': 'OTP sent successfully'
@@ -151,6 +151,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return User.objects.filter(id=self.request.user.id)
     
     def get_serializer_class(self):
+        if self.action in ['update', 'partial_update']:
+            return UserProfileUpdateSerializer
         if self.request.user.is_admin() and self.action in ['create', 'update', 'partial_update']:
             return AdminMemberSerializer
         return super().get_serializer_class()
@@ -189,14 +191,13 @@ class AdminMemberViewSet(viewsets.GenericViewSet):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         data = serializer.validated_data
-        # Check if user already exists
         user, created = User.objects.get_or_create(
             mobile=data['mobile'],
             defaults={
                 'email': data.get('email', ''),
                 'first_name': data['first_name'],
                 'last_name': data['last_name'],
-                'username': data['mobile'],  # Use mobile as username
+                'username': data['mobile'],
                 'role': 'member'
             }
         )
@@ -207,17 +208,14 @@ class AdminMemberViewSet(viewsets.GenericViewSet):
                 status=status.HTTP_409_CONFLICT
             )
         
-        # Set a temporary password (should be changed on first login)
         temp_password = User.objects.make_random_password()
         user.set_password(temp_password)
         user.save()
-        
-        # Send welcome email
-        # send_welcome_email(user.email, temp_password)
+        send_welcome_email(user, temp_password)
         
         return Response({
             'user': AdminMemberSerializer(user).data,
-            'temporary_password': temp_password  # Remove in production
+            'temporary_password': temp_password
         }, status=status.HTTP_201_CREATED)
     
     @action(detail=True, methods=['delete'])
