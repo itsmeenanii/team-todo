@@ -3,6 +3,11 @@ import dj_database_url
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+import sys
+
+# Add apps directory to Python path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / 'apps'))
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
