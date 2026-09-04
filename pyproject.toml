@@ -29,7 +29,7 @@ dependencies = [
     "python-dotenv==1.0.0",
     "gunicorn==21.2.0",
     
-    # Celery (for background tasks - note: won't run on Vercel)
+    # Celery
     "celery==5.2.7",
     "django-celery-beat==2.5.0",
     "django-celery-results==2.5.1",
@@ -38,6 +38,9 @@ dependencies = [
     # Notifications
     "firebase-admin==6.2.0",
     "twilio==8.7.0",
+    
+    # CRITICAL: Required for pkg_resources
+    "setuptools==70.0.0",
 ]
 
 [tool.vercel]
