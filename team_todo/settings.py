@@ -209,8 +209,9 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # App settings - FIXED
+# App settings - FIXED (hardcoded to avoid empty env vars)
 GROUP_TASK_AUTO_GENERATE_TIME = os.getenv('GROUP_TASK_AUTO_GENERATE_TIME', '09:00')
-OTP_EXPIRY_MINUTES = int(os.getenv('OTP_EXPIRY_MINUTES', 10))
+OTP_EXPIRY_MINUTES = 10  # Hardcoded - avoids empty string issue
 
 # Security (production)
 if not DEBUG:
