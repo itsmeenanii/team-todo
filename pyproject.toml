@@ -2,10 +2,17 @@
 name = "team-todo"
 version = "1.0.0"
 description = "Collaborative Todo Application"
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.10,<3.13"  # Changed from "==3.10.*" to allow 3.12
 dependencies = [
     "Django==4.2.0",
     "djangorestframework==3.14.0",
+    "django-cors-headers==4.0.0",
+    "djangorestframework-simplejwt==5.2.2",
+    "psycopg2-binary==2.9.9",
+    "dj-database-url==2.1.0",
+    "whitenoise==6.5.0",
+    "python-decouple==3.8",
+    "gunicorn==21.2.0",
 ]
 
 [tool.vercel]
