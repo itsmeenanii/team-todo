@@ -5,6 +5,7 @@ description = "Collaborative Todo Application"
 requires-python = ">=3.10,<3.13"  # Changed from "==3.10.*" to allow 3.12
 dependencies = [
     "Django==4.2.0",
+    "django-filter==23.2",
     "djangorestframework==3.14.0",
     "django-cors-headers==4.0.0",
     "djangorestframework-simplejwt==5.2.2",
