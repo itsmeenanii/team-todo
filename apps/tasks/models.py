@@ -35,7 +35,6 @@ class TaskStatus(models.Model):
         ('pending', 'Pending'),
         ('done', 'Done'),
         ('not_done', 'Not Done'),
-        ('skipped', 'Skipped'),
     ]
     
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='statuses')
