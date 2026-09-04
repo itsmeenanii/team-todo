@@ -6,7 +6,7 @@ requires-python = ">=3.10,<3.13"
 dependencies = [
     # Django Core
     "Django==4.2.0",
-    "djangorestframework==3.14.0",
+    "djangorestframework==3.15.2",  # UPDATED
     "django-cors-headers==4.0.0",
     "djangorestframework-simplejwt==5.2.2",
     
