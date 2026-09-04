@@ -1,4 +1,14 @@
 import os
+import sys
+from pathlib import Path
+
+# Add apps directory to Python path
+BASE_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BASE_DIR / 'apps'))
+sys.path.insert(0, str(BASE_DIR))
+
+print(f"✅ Python path includes: {sys.path[:3]}")  # Debug
+import os
 import dj_database_url
 from pathlib import Path
 from decouple import config
