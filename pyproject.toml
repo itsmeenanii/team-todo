@@ -1,7 +1,12 @@
 [project]
 name = "team-todo"
 version = "1.0.0"
-requires-python = ">=3.10"
+description = "Collaborative Todo Application"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+    "Django==4.2.0",
+    "djangorestframework==3.14.0",
+]
 
 [tool.vercel]
 entrypoint = "team_todo.wsgi:app"
