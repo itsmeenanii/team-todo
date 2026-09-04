@@ -6,7 +6,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'mobile', 'role', 'is_active', 'is_verified']
+        fields = ['id', 'email', 'first_name', 'last_name', 'mobile', 'role', 'is_active', 'is_verified', 'fcm_token']
         read_only_fields = ['id', 'role', 'is_active', 'is_verified']
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -58,3 +58,8 @@ class MemberAddSerializer(serializers.Serializer):
     email = serializers.EmailField(required=False)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
+
+class UserProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'mobile', 'fcm_token']
