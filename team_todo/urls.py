@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.db import connections
 from django.db.utils import OperationalError
 from django.utils import timezone
@@ -30,8 +31,9 @@ def vercel_health(request):
         'status': 'ok',
         'message': 'Vercel deployment is running successfully'
     })
+
 def home_redirect(request):
-    \n return redirect('/admin/')
+    return redirect('/admin/')
 
 urlpatterns = [
     path('', home_redirect, name='home'),
