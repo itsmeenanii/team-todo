@@ -30,8 +30,11 @@ def vercel_health(request):
         'status': 'ok',
         'message': 'Vercel deployment is running successfully'
     })
+def home_redirect(request):
+    \n return redirect('/admin/')
 
 urlpatterns = [
+    path('', home_redirect, name='home'),
     path('admin/', admin.site.urls),
     path('health/', health_check, name='health_check'),
     path('vercel-health/', vercel_health, name='vercel_health'),
